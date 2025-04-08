@@ -1,49 +1,75 @@
-# 🌐 Semantic AI – Open AI Web-Ilova
+# 🤖 Semantic AI Web Platforma
 
-> Flask asosida ishlab chiqilgan, real serverda joylashtirilgan va to‘liq avtomatlashtirilgan AI mavzusidagi zamonaviy web-ilova.  
-> 🧠 Ilovaning g‘oyasi, tuzilishi va deploy jarayoni muallif tomonidan mustaqil boshqarilgan.
+> AI yordamida matnni semantik tahlil qiluvchi mustaqil ishlab chiqilgan open-source web ilova.
 
-## 🔗 Sayt manzili
+Flask asosida yozilgan, Groq API (LLaMA 3) modeli bilan ishlaydigan va real serverda production darajasida deploy qilingan zamonaviy AI ilova.
 
-👉 https://ai.oqdev.uz
+🌐 Live: [https://ai.oqdev.uz](https://ai.oqdev.uz)
 
-## 🛠 Texnologiyalar
+---
 
-| Komponent       | Ishlatilgan texnologiya              |
-|----------------|---------------------------------------|
-| Backend         | Python (Flask)                       |
-| Server          | Gunicorn + Supervisor                |
-| Web server      | Nginx                                |
-| Xosting         | Ubuntu 22.04 Virtual Machine (VM)    |
-| Domen           | `ai.oqdev.uz` (DNS bilan bog‘langan) |
-| HTTPS           | Certbot (Let's Encrypt)              |
-| Avto-tiklanish  | Supervisor (restart, crash-handle)   |
+## 📌 Asosiy imkoniyatlar:
 
-## ⚙️ Loyiha imkoniyatlari
+- 🔍 **Nomlangan obyektlarni aniqlash** (PERSON, LOCATION, SOHA, TUSHUNCHA va boshqalar)
+- 🎭 **Sentiment tahlili** (matn umumiy hissiyotini aniqlash)
+- 🧠 **Kalit so‘zlar ajratish** (maksimum 10ta)
+- 🌐 **Obyektlar o‘rtasidagi bog‘liqliklarni aniqlash va vizual grafik shaklida ko‘rsatish**
+- 📈 **Gaplar darajasida sentiment dinamikasi (har bir gapda hissiyot)**
+- 🧾 **Sentimentni izohlab berish (AI tushuntiradi)**
 
-- Flask ilovasi orqali AI modelni chaqirish
-- Gunicorn orqali stabil, barqaror WSGI server
-- Nginx orqali tashqi dunyo bilan xavfsiz bog‘lanish
-- HTTPS bilan to‘liq xavfsizlik (Chrome, Firefox, mobil brauzerlar uchun tayyor)
-- Supervisor orqali server qayta yoqilganda avtomatik ishga tushish
-- `.gitignore` bilan keraksiz fayllar tozalangan
+---
 
-## 🧠 Muallif haqida
+## ⚙️ Texnologiyalar va Arxitektura
 
-Loyiha muallifi tomonidan mustaqil ravishda 0 dan ishlab chiqilgan:
-- Fikrdan tortib, serverga joylashtirishgacha
-- AI yordamida texnik bilimlarni mustaqil o‘zlashtirish asosida
-- Haqiqiy muammolarni (NAT, DNS, SSL, port, firewall) hal qilish orqali real tajriba orttirilgan
+| Komponent     | Texnologiya                                      |
+|---------------|--------------------------------------------------|
+| Backend       | Python 3, Flask                                  |
+| AI modeli     | Groq API (LLaMA3-8B-8192)                        |
+| Server        | Gunicorn + Supervisor                            |
+| Web server    | Nginx (SSL bilan)                                |
+| Deploy        | Ubuntu 22.04 VM                                  |
+| HTTPS         | Let's Encrypt + Certbot                          |
+| Monitoring    | Supervisor (avtomatik restart)                   |
 
-## 🧾 Foydalanish
+---
 
-1. `git clone` yordamida loyihani yuklab oling
-2. `venv` virtual muhit yarating
-3. `requirements.txt` orqali kutubxonalarni o‘rnating
-4. `gunicorn` yoki `flask run` orqali ishga tushiring
+## 🛡️ API Kaliti Maxfiyligi
 
-```bash
+API kaliti ochiq ko‘rinmasligi uchun quyidagicha usul ishlatilgan:
+
+```python
+from groq import Groq
+import os
+
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+📂 Loyiha Strukturasi (asosiy fayllar)
+├── app.py                 # Flask backend (asosiy logika)
+├── semantic_project.conf  # Supervisor config
+├── static/                # Statik fayllar (CSS, JS)
+├── templates/             # HTML sahifalar (Jinja2)
+├── requirements.txt       # Kutubxonalar ro‘yxati
+├── .gitignore             # Git uchun istisno fayllar
+
+🚀 Ishga tushirish (developer rejimda)
+git clone git@github.com:humoyun200108/semantic.git
+cd semantic
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-gunicorn --bind 0.0.0.0:8000 app:app
+export GROQ_API_KEY="your_real_groq_api_key"
+python app.py
+
+📦 Productionda Gunicorn + Supervisor + Nginx ishlatiladi.
+
+📈 Muallif yutuqlari
+✅ To‘liq loyiha 0 dan ishlab chiqilgan
+✅ DNS, domen bog‘lash, SSL, backend va frontend integratsiyasi
+✅ GitHub, Git, push, .env, .gitignore — hammasi to‘g‘ri ishlatilgan
+✅ Tajribali developer darajasida production server sozlangan
+
+📜 Litsenziya
+MIT License – istalgancha foydalaning, o‘zgartiring va ulashing. Faqat mualliflikni saqlang.
+
+🧠 Muallif: @humoyun200108
+“AI vositasi bo‘lishi mumkin, ammo haqiqiy kuch — niyat va qat’iyatda. Bu loyiha - shuning isboti.”
+
