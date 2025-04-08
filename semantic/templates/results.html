@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahlil Natijalari | Semantik Tahlil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Ichki stillar (avvalgidek) */
+        body { cursor: none; }
+        .results-main-container { max-width: 1000px; margin: 40px auto; padding: 20px; position: relative; z-index: 1; }
+        .page-title { text-align: center; margin-bottom: 30px; font-size: 2.5rem; color: #fff; animation: fadeInDown 1s ease-out; }
+        .page-title i { margin-right: 15px; color: var(--primary-color); }
+        .result-block { margin-bottom: 30px; }
+        .back-button { display: inline-block; margin: 0 0 25px 0; padding: 10px 25px; background: var(--secondary-color); color: white; border: none; border-radius: 8px; text-decoration: none; font-size: 1rem; font-weight: 500; transition: background-color 0.3s ease, transform 0.2s ease; cursor: none; }
+        .back-button:hover { background-color: #5a6268; transform: translateY(-2px); }
+        .back-button i { margin-right: 8px; }
+        footer { text-align: center; margin-top: 50px; padding: 20px 0; color: var(--secondary-color); font-size: 0.9em; border-top: 1px solid var(--border-color); }
+        .placeholder .fa-spinner { font-size: 2rem; display: block; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="tsparticles"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="results-main-container">
+        <h1 class="page-title"><i class="fas fa-chart-line"></i> Tahlil Natijalari</h1>
+        <a href="{{ url_for('index') }}" class="back-button">
+            <i class="fas fa-arrow-left"></i> Bosh Sahifaga Qaytish
+        </a>
+
+        <div id="results-content-area">
+            <div class="placeholder card" style="text-align: center; padding: 40px; opacity: 0.8;">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Natijalar yuklanmoqda...</p>
+            </div>
+        </div>
+
+        <div id="original-text-block" class="result-block card">
+             <h3><i class="fas fa-file-alt"></i> Asl Matn (Interaktiv)</h3>
+             <div id="original-text-display" class="original-text-content"></div>
+        </div>
+
+        <div class="expert-link-container card">
+             <h3><i class="fas fa-wand-magic-sparkles"></i> Chuqurroq Tahlil</h3>
+             <p>Matnning yanada chuqurroq tahlili, obyektlararo bog'liqliklar va boshqa vizualizatsiyalarni ko'rish uchun quyidagi tugmani bosing.</p>
+             <a href="{{ url_for('show_expert_results') }}" class="expert-button">
+                 <i class="fas fa-flask-vial"></i> Ekspert Tahliliga O'tish
+                 <span class="button-shine"></span>
+             </a>
+        </div>
+        <footer>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> | Safarov Humoyun | 223-21-guruh</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/results.js') }}"></script>
+</body>
+</html>

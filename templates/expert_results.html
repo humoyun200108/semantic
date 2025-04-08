@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekspert Tahlili | Semantik Tahlil</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <link href="https://unpkg.com/vis-network/styles/vis-network.min.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        body { cursor: none; }
+        .expert-container { max-width: 1200px; margin: 40px auto; padding: 20px; position: relative; z-index: 1; }
+        .expert-title { text-align: center; margin-bottom: 30px; font-size: 2.5rem; color: #fff; animation: fadeInDown 1s ease-out; }
+        .expert-title i { margin-right: 15px; color: var(--primary-color); }
+        .expert-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px; }
+        .expert-block { position: relative; /* Karta stili ishlatiladi (.card klassi bilan) */ }
+        .expert-block h4 { font-size: 1.2rem; margin-bottom: 15px; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+        .expert-block h4 i { margin-right: 10px; }
+        .placeholder-expert { text-align: center; padding: 30px; opacity: 0.7; font-style: italic; }
+        .placeholder-expert i { display: block; font-size: 2rem; margin-bottom: 10px; color: var(--secondary-color); }
+        /* Grafik konteynerlari uchun stil */
+        #relationshipGraph, #keywordNetwork, #sentimentDynamicsChartContainer, #topicModeling {
+             width: 100%;
+             min-height: 400px; /* Minimal balandlik */
+             border: 1px solid var(--border-color);
+             border-radius: 8px;
+             background: rgba(0,0,0,0.15);
+             margin-top: 15px;
+             position: relative; /* Loader uchun */
+             display: flex; /* Ichidagini markazlashtirish uchun */
+             align-items: center;
+             justify-content: center;
+        }
+         #sentimentDynamicsChartContainer { /* Chart uchun balandlik */
+             height: 300px;
+             min-height: 300px;
+             padding: 10px; /* Chart uchun joy */
+         }
+         /* Loader uchun stil */
+        .graph-loader {
+             /* position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); */ /* Flex markazlashtirgani uchun kerak emas */
+             text-align: center;
+             color: var(--text-color);
+             opacity: 0.8;
+         }
+         .graph-loader i { font-size: 2rem; display: block; margin-bottom: 10px; animation: spin 1.5s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Qaytish tugmasi */
+        .back-button-expert { display: inline-block; margin: 30px 0 10px 0; padding: 10px 25px; background: var(--secondary-color); color: white; border: none; border-radius: 8px; text-decoration: none; font-size: 1rem; font-weight: 500; transition: background-color 0.3s ease, transform 0.2s ease; cursor: none; }
+        .back-button-expert:hover { background-color: #5a6268; transform: translateY(-2px); }
+        .back-button-expert i { margin-right: 8px; }
+        /* Footer */
+        footer { text-align: center; margin-top: 50px; padding: 20px 0; color: var(--secondary-color); font-size: 0.9em; border-top: 1px solid var(--border-color); }
+    </style>
+</head>
+<body>
+    <div id="tsparticles"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="expert-container">
+        <h1 class="expert-title"><i class="fas fa-microscope"></i> Ekspert Tahlili</h1>
+
+        <a href="{{ url_for('show_results') }}" class="back-button-expert">
+            <i class="fas fa-arrow-left"></i> Oddiy Natijalarga Qaytish
+        </a>
+
+        <div class="expert-grid">
+
+            <div id="relationship-graph-block" class="expert-block card">
+                <h4><i class="fas fa-project-diagram"></i> Obyektlar Bog'liqligi Grafigi</h4>
+                <div class="graph-controls">
+                    <button id="expand-graph-btn" title="Grafikni kattalashtirish"><i class="fas fa-expand"></i></button>
+                    <button id="close-graph-btn" title="Grafikni kichiklashtirish" style="display: none;"><i class="fas fa-compress"></i></button>
+                </div>
+                <div id="relationshipGraph">
+                    <div class="graph-loader placeholder-expert">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Bog'liqliklar qidirilmoqda...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expert-block card">
+                <h4><i class="fas fa-wave-square"></i> Sentiment Dinamikasi</h4>
+                <div id="sentimentDynamicsChartContainer">
+                     <div class="graph-loader placeholder-expert"> <i class="fas fa-spinner fa-spin"></i>
+                        <p>Sentiment dinamikasi yuklanmoqda...</p>
+                    </div>
+                    <canvas id="sentimentDynamicsChart"></canvas> </div>
+            </div>
+
+            <div class="expert-block card">
+                <h4><i class="fas fa-share-alt"></i> Kalit So'zlar Tarmog'i</h4>
+                <div id="keywordNetwork">
+                     <div class="placeholder-expert"><i class="fas fa-tools"></i><p>Bu funksiya keyinroq qo'shiladi.</p></div>
+                </div>
+            </div>
+
+             <div class="expert-block card">
+                <h4><i class="fas fa-tags"></i> Asosiy Mavzular</h4>
+                <div id="topicModeling">
+                     <div class="placeholder-expert"><i class="fas fa-tools"></i><p>Bu funksiya keyinroq qo'shiladi.</p></div>
+                </div>
+            </div>
+
+        </div> <footer>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> | Safarov Humoyun | 223-21-guruh</p>
+        </footer>
+
+    </div> <script src="{{ url_for('static', filename='js/expert_results.js') }}"></script>
+</body>
+</html>

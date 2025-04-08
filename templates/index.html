@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantik Tahlil | Kreativ Interfeys</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .loader {
+            border: 5px solid #eee;
+            border-top: 5px solid #00aaff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="tsparticles"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="main-container">
+        <header class="app-header">
+            <h1><i class="fas fa-brain"></i> Matnning Semantik Tahlili</h1>
+            <p class="subtitle">Sun'iy Intellekt yordamida matnni tahlil qiling!</p>
+        </header>
+
+        <section class="input-section card">
+             <h2><i class="fas fa-keyboard"></i> Tahlil uchun matnni kiriting:</h2>
+            <textarea id="textInput" rows="10" placeholder="O'zbek tilidagi matnni shu yerga yozing... Masalan, ilmiy maqola, yangilik yoki shunchaki biror gap."></textarea>
+            <button id="analyzeButton">
+                <i class="fas fa-cogs"></i> Tahlil Qilish
+                <span class="button-shine"></span>
+            </button>
+             <div id="loader" class="loader"></div>
+             <div id="resultsArea" class="results-section" style="min-height: auto;"></div>
+        </section>
+
+    </div> <footer>
+        <p>&copy; <script>document.write(new Date().getFullYear())</script> | Safarov Humoyun | 223-21-guruh</p>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
