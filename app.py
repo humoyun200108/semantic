@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO)
 client = None # Global o'zgaruvchi klient obyekti uchun
 try:
     # !!! BU YERGA O'ZINGIZNING HAQIQIY 'gsk_...' GROQ API KALITINGIZNI KIRITING !!!
-    GROQ_API_KEY = "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" # <<< FAQAT SHU QO'SHTIRNOQ ICHIGA!
+    GROQ_API_KEY = "YOUR GROQ API KEY" # <<< FAQAT SHU QO'SHTIRNOQ ICHIGA!
     GROQ_API_KEY = GROQ_API_KEY.strip() # Ortiqcha bo'shliqlarni olib tashlash
 
     # Kalit kiritilgan va to'g'ri formatda ekanligini tekshirish
